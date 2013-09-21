@@ -24,7 +24,7 @@ exports.topColours = (sourceFilename, sorted, cb) ->
 
           histogram = ''
           miffRS = fs.createReadStream(tmpFilename, {encoding: 'utf8'})
-
+          miffRS.on('error', (error) -> console.log "Caught", error
           miffRS.addListener('data', (chunk) ->
             endDelimPos = chunk.indexOf(MIFF_END)
 
