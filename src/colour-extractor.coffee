@@ -15,9 +15,16 @@ exports.topColours = (sourceFilename, sorted, cb) ->
     ratio = wh.width/MAX_W
     w2 = wh.width/2
     h2 = wh.height/2
+
+    square = (if (wh.width < wh.height) then (wh.width / 2) else (wh.height / 2))
+    width = square
+    height = square
+    x = wh.width/2 - square/2
+    y = wh.height/2 - square/2
+    
     img.noProfile()                               # Removes EXIF data
        .bitdepth(8)                               # Initial colour reduction, prob. smarter than our 'algorithm'
-       .crop(w2, h2, w2/2, w2/2)                  # Center should be the most interesting
+       .crop(width, height, x, y)                  # Center should be the most interesting
        .scale(Math.ceil(wh.height/ratio), MAX_W)  # Scales the image, histogram generation can take some time
        .write('histogram:' + tmpFilename, (err) ->
           console.log err if err
