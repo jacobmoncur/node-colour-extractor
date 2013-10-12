@@ -10,7 +10,7 @@ exports.topColours = (sourceFilename, sorted, cb) ->
   img = gm(sourceFilename)
   tmpFilename = temp.path({suffix: '.miff'})
   img.size((err, wh) ->
-    console.log err if err
+    return cb err, null if err
     
     ratio = wh.width/MAX_W
     w2 = wh.width/2
@@ -27,7 +27,7 @@ exports.topColours = (sourceFilename, sorted, cb) ->
        .crop(width, height, x, y)                  # Center should be the most interesting
        .scale(Math.ceil(wh.height/ratio), MAX_W)  # Scales the image, histogram generation can take some time
        .write('histogram:' + tmpFilename, (err) ->
-          console.log err if err
+          return cb err, null if err
 
           histogram = ''
           miffRS = fs.createReadStream(tmpFilename, {encoding: 'utf8'})
@@ -52,7 +52,7 @@ exports.topColours = (sourceFilename, sorted, cb) ->
                                       .map(parseHistogramLine)
                                       ))
             colours = colours.sort(sortByFrequency) if sorted
-            cb(colours)
+            cb err, colours
           )
         )
   )
