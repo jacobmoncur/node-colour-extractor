@@ -58,7 +58,8 @@ exports.topColours = (sourceFilename, sorted, cb) ->
   )
 
 exports.colourKey = (path, cb) ->
-  exports.topColours(path, false, (xs) ->
+  exports.topColours(path, false, (err, xs) ->
+    cb err, null if err
     M = xs.length
     m = Math.ceil(M/2)
 
